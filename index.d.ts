@@ -2,14 +2,10 @@ declare module 'pdfkit-table'
 {
 	import PDFDocument from 'pdfkit';
 
-	interface Rect {
-		x: number;
-		y: number;
-		width: number;
-		height: number;
-	}
+	import { Rect } from 'pdfkit';
+	export type { Rect };
 
-	interface Header {
+	export interface Header {
 		label?: string;
 		property?: string;
 		width?: number;
@@ -30,17 +26,17 @@ declare module 'pdfkit-table'
 		) => string;
 	}
 
-	interface DataOptions {
+	export interface DataOptions {
 		fontSize: number;
 		fontFamily: string;
 		separation: boolean;
 	}
 
-	interface Data {
+	export interface Data {
 		[key: string]: string | { label: string; options?: DataOptions };
 	}
 
-	interface Table {
+	export interface Table {
 		title?: string;
 		subtitle?: string;
 		headers?: (string | Header)[];
@@ -48,18 +44,18 @@ declare module 'pdfkit-table'
 		rows?: string[][];
 	}
 
-	interface DividerOptions {
+	export interface DividerOptions {
 		disabled?: boolean;
 		width?: number;
 		opacity?: number;
 	}
 
-	interface Divider {
+	export interface Divider {
 		header?: DividerOptions;
 		horizontal?: DividerOptions;
 	}
 
-	interface Title 
+	export interface Title
 	{
 		label: string;
 		fontSize?: number;
@@ -67,8 +63,8 @@ declare module 'pdfkit-table'
 		color?: string; 
 	}
 
-	interface Options {
-		title?: string | Title ;
+	export interface Options {
+		title?: string | Title;
 		subtitle?: string | Title;
 		width?: number;
 		x?: number; //default doc.x
@@ -82,18 +78,21 @@ declare module 'pdfkit-table'
 		minRowHeight?: number;
 		prepareHeader?: () => PDFDocumentWithTables;
 		prepareRow?: (
-			row?: any,
-			indexColumn?: number,
-			indexRow?: number,
-			rectRow?: Rect,
-			rectCell?: Rect
+			row: any,
+			indexColumn: number,
+			indexRow: number,
+			rectRow: Rect,
+			rectCell: Rect
 		) => PDFDocumentWithTables;
 	}
 
 	class PDFDocumentWithTables extends PDFDocument {
+		constructor(option);
 		public table(table: Table, options?: Options): Promise<void>;
+		public addBackground(rect: Rect, fillColor?: string, fillOpacity?: number): void;
 	}
 
 	// export = PDFDocumentWithTables;
+	export { PDFDocumentWithTables };
 	export default PDFDocumentWithTables;
 }
