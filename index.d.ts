@@ -36,13 +36,21 @@ declare module 'pdfkit-table'
 		[key: string]: string | { label: string; options?: DataOptions };
 	}
 
-	export interface Table {
+	interface BaseTable {
 		title?: string;
 		subtitle?: string;
 		headers?: (string | Header)[];
-		datas?: Data[];
-		rows?: string[][];
 	}
+
+	export interface SimpleTable extends BaseTable {
+		rows: string[][];
+	}
+
+	export interface ComplexTable extends BaseTable {
+		datas: Data[];
+	}
+
+	export type Table = SimpleTable | ComplexTable;
 
 	export interface DividerOptions {
 		disabled?: boolean;
@@ -55,8 +63,7 @@ declare module 'pdfkit-table'
 		horizontal?: DividerOptions;
 	}
 
-	export interface Title
-	{
+	export interface Title {
 		label: string;
 		fontSize?: number;
 		fontFamily?: string;
@@ -72,7 +79,7 @@ declare module 'pdfkit-table'
 		divider?: Divider;
 		columnsSize?: number[];
 		columnSpacing?: number; //default 5
-		padding?: number[]; 
+		padding?: number | number[];
 		addPage?: boolean; //default false
 		hideHeader?: boolean;
 		minRowHeight?: number;
